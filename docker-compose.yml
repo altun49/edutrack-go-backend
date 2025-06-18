@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  server-service:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    container_name: server-service
+    ports:
+      - "50051:50051"
+    networks:
+      - grpcnet
+
+  client-service:
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+    container_name: client-service
+    depends_on:
+      - server-service
+    networks:
+      - grpcnet
+    environment:
+      - GRPC_SERVER=server-service:50051
+
+networks:
+  grpcnet:

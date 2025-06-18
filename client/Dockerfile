@@ -1,3 +1,4 @@
+# Stage 1: build
 FROM golang:1.23 AS builder
 
 WORKDIR /app
@@ -8,14 +9,12 @@ RUN go mod download
 COPY . .
 
 WORKDIR /app/client
-RUN go build -o client
 
-FROM gcr.io/distroless/static:nonroot
+RUN go build -o /client
 
-WORKDIR /app
+# Stage 2: minimal runtime
+FROM debian:bookworm-slim
 
-COPY --from=builder /app/client/client .
+COPY --from=builder /client /client
 
-USER nonroot:nonroot
-
-CMD ["/app/client"]
+ENTRYPOINT ["/client"]
