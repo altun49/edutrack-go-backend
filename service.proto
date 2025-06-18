@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+// Имя пакета protobuf (используется в protobuf-экосистеме)
+package edutrack.grpc;
+
+// Опция для генератора Go — полный импортный путь
+// Здесь указывай реальный модуль и путь в твоём проекте
+option go_package = "edutrack-backend/gen/edutrackgrpc;edutrackgrpc";
+
+
+// Сервис с RPC методами
+service Greeter {
+  // Метод SayHello принимает HelloRequest и возвращает HelloReply
+  rpc SayHello (HelloRequest) returns (HelloReply);
+}
+
+message HelloRequest {
+  string name = 1;
+}
+
+message HelloReply {
+  string message = 1;
+}
